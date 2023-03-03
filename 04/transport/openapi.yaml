@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: User management service
+  description: User management service allowing to manage users.
+  version: 0.0.0
+servers:
+  - url: http://localhost
+    description: Localhost server
+    
+
+paths:
+  "/healthz":
+    get:
+      description: Hearthbeat
+      operationId: hearthbeat
+      summary: Check the hearthbeat of the service
+      responses: 
+        "204":
+          description: It's ALIVE (a.k.a. service is up and running)
+        "400":
+          description: Invalid request
+  "/users":
+    get:
+      description: List existing users
+      operationId: listUsers
+      summary: List existing users
+      responses: 
+        "200":
+          description: ""
+          content: 
+            application/json; charset=utf-8:
+              schema: 
+                description: List of existing users
+                type: array
+                items: 
+                  $ref: "#/components/schemas/user"
+        "400":
+          description: "Invalid request"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal server error"
+    post:
+      description: Get user with specified email
+      operationId: createUer
+      summary: Create a new user
+      responses: 
+        "201":
+          description: ""
+          content: 
+            application/json; charset=utf-8:
+              schema: 
+                $ref: "#/components/schemas/user"
+        "400":
+          description: "Invalid request"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal server error"
+  "/users/{email}":
+    get:
+      description: Get user with specified email
+      operationId: getUser
+      summary: Get specified user
+      parameters:
+        - $ref: "#/components/parameters/email"
+      responses: 
+        "200":
+          description: ""
+          content: 
+            application/json; charset=utf-8:
+              schema: 
+                $ref: "#/components/schemas/user"
+        "400":
+          description: "Invalid request"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal server error"
+    delete:
+      description: Delete a user with specified email
+      operationId: deleteUser
+      summary: Deletes an user
+      parameters: 
+        - $ref: "#/components/parameters/email"
+      responses: 
+        "204":
+          description: User was deleted
+        "400":
+          description: "Invalid request"
+        "404":
+          description: "User not found"
+        "500":
+          description: "Internal server error"
+    patch: 
+      description: Update an user with specified email
+      operationId: updateUser
+      summary: Update an user
+      parameters: 
+        - $ref: "#/components/parameters/email"
+      responses: 
+        "200":
+          $ref: "#/components/schemas/user"
+        "400":
+          description: Invalid request
+        "404":
+          description: User not found
+        "409":
+          description: User already exists
+        "500":
+          description: Internal server error
+
+      
+components: 
+  parameters:
+    email:
+      in: path
+      name: email
+      schema:
+        type: string
+      description: Type of podcast wanted
+      required: true
+  schemas: 
+    user:
+      type: object
+      description: User object
+      properties:
+        first_name:
+          type: string
+          description: First name
+          example: John
+        last_name:
+          type: string
+          description: Last name
+          example: Doe
+        email:
+          type: string
+          description: Email of the user
+          example: testing@vse.com
+        birth_date:
+          $ref: "#/components/schemas/birthDate"
+    birthDate:
+      type: object
+      properties: 
+        day:
+          type: integer
+          description: Day of the birth
+          example: 13
+        month:
+          type: integer
+          description: Month of the birth
+          example: 5
+        year:
+          type: integer
+          description: Year of the birth
+          example: 1998
+
+      
