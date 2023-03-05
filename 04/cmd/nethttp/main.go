@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"vse-course/config"
-	nethttp "vse-course/transport/vanilla"
+	nethttp "vse-course/transport/nethttp"
 )
 
 func main() {

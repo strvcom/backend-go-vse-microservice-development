@@ -44,6 +44,11 @@ paths:
       description: Get user with specified email
       operationId: createUer
       summary: Create a new user
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
       responses: 
         "201":
           description: ""
@@ -96,6 +101,11 @@ paths:
       description: Update an user with specified email
       operationId: updateUser
       summary: Update an user
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
       parameters: 
         - $ref: "#/components/parameters/email"
       responses: 
@@ -120,6 +130,7 @@ components:
         type: string
       description: Type of podcast wanted
       required: true
+      example: valid@mail.com
   schemas: 
     user:
       type: object

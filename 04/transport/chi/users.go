@@ -21,11 +21,13 @@ func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	err := util.UnmarshalRequest(r, &user)
 	if err != nil {
 		util.WriteErrResponse(w, http.StatusBadRequest, err)
+		return
 	}
 
 	err = h.Service.CreateUser(r.Context(), model.ToSvcUser(user))
 	if err != nil {
 		util.WriteErrResponse(w, http.StatusInternalServerError, err)
+		return
 	}
 
 	util.WriteResponse(w, http.StatusCreated, user)

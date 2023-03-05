@@ -5,7 +5,6 @@ import (
 	"vse-course/transport/model"
 
 	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/v5"
 )
 
 type Handler struct {
