@@ -1,6 +1,8 @@
 package chi
 
 import (
+	"net/http"
+
 	"vse-course/service"
 	"vse-course/transport/model"
 
@@ -20,6 +22,8 @@ func Initialize(port int) *Handler {
 		Service: service.CreateService(),
 	}
 
+	h.Mux.Get("/healthz", healthz)
+
 	h.Mux.Route("/users", func(r chi.Router) {
 		r.Get("/", h.ListUsers)
 		r.Post("/", h.CreateUser)
@@ -32,4 +36,8 @@ func Initialize(port int) *Handler {
 	})
 
 	return h
+}
+
+func healthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNoContent)
 }

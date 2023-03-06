@@ -3,7 +3,6 @@ package chi
 import (
 	"net/http"
 
-	svcmodel "vse-course/service/model"
 	"vse-course/transport/model"
 	"vse-course/transport/util"
 
@@ -19,6 +18,12 @@ func getEmailFromURL(r *http.Request) string {
 func (h *Handler) CreateUser(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	err := util.UnmarshalRequest(r, &user)
+	if err != nil {
+		util.WriteErrResponse(w, http.StatusBadRequest, err)
+		return
+	}
+
+	err = user.BirthDate.ValidateBirthDate()
 	if err != nil {
 		util.WriteErrResponse(w, http.StatusBadRequest, err)
 		return
@@ -57,7 +62,13 @@ func (h *Handler) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newUser, err := h.Service.UpdateUser(r.Context(), getEmailFromURL(r), svcmodel.User{})
+	err = user.BirthDate.ValidateBirthDate()
+	if err != nil {
+		util.WriteErrResponse(w, http.StatusBadRequest, err)
+		return
+	}
+
+	newUser, err := h.Service.UpdateUser(r.Context(), getEmailFromURL(r), model.ToSvcUser(user))
 	if err != nil {
 		util.WriteErrResponse(w, http.StatusInternalServerError, err)
 		return
