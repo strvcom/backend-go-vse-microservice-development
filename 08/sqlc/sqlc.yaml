@@ -1,0 +1,12 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    queries: "./scripts"
+    schema: "../migrations"
+    gen:
+      go:
+        package: "eshop"
+        out: "eshop"
+        overrides:
+          - db_type: "pg_catalog.numeric"
+            go_type: "float64"
