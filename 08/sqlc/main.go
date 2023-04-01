@@ -32,6 +32,7 @@ func createCustomer(ctx context.Context, query *eshop.Queries) (*eshop.Customer,
 	}
 
 	createCustomerAddressParams := eshop.CreateCustomerAddressParams{
+		ID:           uuid.New(),
 		CustomerID:   customer.ID,
 		LocationName: "Work",
 		Address:      "Rohanské nábř. 678/23, 186 00 Karlín",
@@ -105,8 +106,8 @@ func createData(ctx context.Context, db *sql.DB) (err error) {
 		if err != nil {
 			if rErr := tx.Rollback(); rErr != nil {
 				err = errors.Join(rErr, err)
-				return
 			}
+			return
 		}
 		if cErr := tx.Commit(); err != nil {
 			err = errors.Join(cErr, err)

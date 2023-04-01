@@ -9,7 +9,8 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE customer_address (
-    customer_id   UUID PRIMARY KEY REFERENCES customer(id),
+    id            UUID PRIMARY KEY,
+    customer_id   UUID NOT NULL REFERENCES customer(id),
     location_name VARCHAR(255) NOT NULL,
     address       VARCHAR(255) NOT NULL,
     created_at    TIMESTAMP    NOT NULL,

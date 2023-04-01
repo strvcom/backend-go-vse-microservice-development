@@ -31,6 +31,7 @@ func createCustomer(tx *sqlx.Tx) (*Customer, error) {
 	_, err := tx.NamedExec(
 		query.CreateCustomerAddress,
 		map[string]any{
+			"id":            customerAddress.ID,
 			"customer_id":   customerAddress.CustomerID,
 			"location_name": customerAddress.LocationName,
 			"address":       customerAddress.Address,
@@ -81,8 +82,8 @@ func createData(ctx context.Context, db *sqlx.DB) (err error) {
 		if err != nil {
 			if rErr := tx.Rollback(); rErr != nil {
 				err = errors.Join(rErr, err)
-				return
 			}
+			return
 		}
 		if cErr := tx.Commit(); err != nil {
 			err = errors.Join(cErr, err)

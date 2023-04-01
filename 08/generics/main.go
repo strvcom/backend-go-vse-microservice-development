@@ -3,11 +3,10 @@ package main
 import (
 	"context"
 
-	"github.com/google/uuid"
-
 	"data-persistence/generics/model"
 	"data-persistence/generics/repository"
 
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 

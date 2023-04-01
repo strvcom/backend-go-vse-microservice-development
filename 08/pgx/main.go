@@ -46,6 +46,7 @@ func createCustomer(ctx context.Context, querier Querier) (*Customer, error) {
 		"Rohanské nábř. 678/23, 186 00 Karlín",
 	)
 	_, err = querier.Exec(ctx, query.CreateCustomerAddress, pgx.NamedArgs{
+		"id":            customerAddress.ID,
 		"customer_id":   customerAddress.CustomerID,
 		"location_name": customerAddress.LocationName,
 		"address":       customerAddress.Address,
@@ -125,8 +126,8 @@ func createData(ctx context.Context, db *pgxpool.Pool) (err error) {
 		if err != nil {
 			if rErr := tx.Rollback(ctx); rErr != nil {
 				err = errors.Join(rErr, err)
-				return
 			}
+			return
 		}
 		if cErr := tx.Commit(ctx); err != nil {
 			err = errors.Join(cErr, err)

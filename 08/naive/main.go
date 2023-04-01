@@ -38,6 +38,7 @@ func createCustomer(tx *sql.Tx) (*Customer, error) {
 	)
 	_, err = tx.Exec(
 		query.CreateCustomerAddress,
+		customerAddress.ID,
 		customerAddress.CustomerID,
 		customerAddress.LocationName,
 		customerAddress.Address,
@@ -93,8 +94,8 @@ func createData(ctx context.Context, db *sql.DB) (err error) {
 		if err != nil {
 			if rErr := tx.Rollback(); rErr != nil {
 				err = errors.Join(rErr, err)
-				return
 			}
+			return
 		}
 		if cErr := tx.Commit(); err != nil {
 			err = errors.Join(cErr, err)
@@ -158,6 +159,7 @@ func listCustomerAddresses(db *sql.DB, customerID uuid.UUID) ([]CustomerAddress,
 	for rows.Next() {
 		c := CustomerAddress{}
 		err = rows.Scan(
+			&c.ID,
 			&c.CustomerID,
 			&c.LocationName,
 			&c.Address,

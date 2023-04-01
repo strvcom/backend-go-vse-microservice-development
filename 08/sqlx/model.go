@@ -28,6 +28,7 @@ type Customer struct {
 func NewCustomerAddress(customerID uuid.UUID, locationName, address string) *CustomerAddress {
 	now := time.Now()
 	return &CustomerAddress{
+		ID:           uuid.New(),
 		CustomerID:   customerID,
 		LocationName: locationName,
 		Address:      address,
@@ -37,6 +38,7 @@ func NewCustomerAddress(customerID uuid.UUID, locationName, address string) *Cus
 }
 
 type CustomerAddress struct {
+	ID           uuid.UUID `db:"id"`
 	CustomerID   uuid.UUID `db:"customer_id"`
 	LocationName string    `db:"location_name"`
 	Address      string    `db:"address"`

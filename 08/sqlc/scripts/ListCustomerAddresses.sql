@@ -1,5 +1,6 @@
 -- name: ListCustomerAddresses :many
 SELECT
+    ca.id,
     ca.customer_id,
     ca.location_name,
     ca.address,

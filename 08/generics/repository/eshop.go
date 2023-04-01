@@ -37,6 +37,7 @@ func (r Repository) CreateCustomerWithAddress(ctx context.Context, customer *mod
 		}
 
 		err = execOne(ctx, q, query.CreateCustomerAddress, pgx.NamedArgs{
+			"id":            address.ID,
 			"customer_id":   address.CustomerID,
 			"location_name": address.LocationName,
 			"address":       address.Address,

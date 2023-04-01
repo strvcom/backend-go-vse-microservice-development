@@ -35,6 +35,7 @@ func toCustomers(customers []customer) []model.Customer {
 }
 
 type customerAddress struct {
+	ID           uuid.UUID `db:"id"`
 	CustomerID   uuid.UUID `db:"customer_id"`
 	LocationName string    `db:"location_name"`
 	Address      string    `db:"address"`
@@ -44,6 +45,7 @@ type customerAddress struct {
 
 func (c customerAddress) toCustomerAddress() *model.CustomerAddress {
 	return &model.CustomerAddress{
+		ID:           c.ID,
 		CustomerID:   c.CustomerID,
 		LocationName: c.LocationName,
 		Address:      c.Address,

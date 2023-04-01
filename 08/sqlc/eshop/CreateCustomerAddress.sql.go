@@ -14,16 +14,18 @@ import (
 
 const createCustomerAddress = `-- name: CreateCustomerAddress :exec
 INSERT INTO customer_address (
+    id,
     customer_id,
     location_name,
     address,
     created_at,
     updated_at
 ) VALUES
-    ($1, $2, $3, $4, $5)
+    ($1, $2, $3, $4, $5, $6)
 `
 
 type CreateCustomerAddressParams struct {
+	ID           uuid.UUID
 	CustomerID   uuid.UUID
 	LocationName string
 	Address      string
@@ -33,6 +35,7 @@ type CreateCustomerAddressParams struct {
 
 func (q *Queries) CreateCustomerAddress(ctx context.Context, arg CreateCustomerAddressParams) error {
 	_, err := q.db.ExecContext(ctx, createCustomerAddress,
+		arg.ID,
 		arg.CustomerID,
 		arg.LocationName,
 		arg.Address,

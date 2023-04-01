@@ -13,6 +13,7 @@ import (
 
 const listCustomerAddresses = `-- name: ListCustomerAddresses :many
 SELECT
+    ca.id,
     ca.customer_id,
     ca.location_name,
     ca.address,
@@ -36,6 +37,7 @@ func (q *Queries) ListCustomerAddresses(ctx context.Context, id uuid.UUID) ([]Cu
 	for rows.Next() {
 		var i CustomerAddress
 		if err := rows.Scan(
+			&i.ID,
 			&i.CustomerID,
 			&i.LocationName,
 			&i.Address,

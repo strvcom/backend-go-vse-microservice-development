@@ -25,6 +25,7 @@ type Customer struct {
 }
 
 type CustomerAddress struct {
+	ID           uuid.UUID
 	CustomerID   uuid.UUID
 	LocationName string
 	Address      string

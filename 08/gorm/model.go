@@ -20,7 +20,7 @@ func NewCustomer(name, email string) *Customer {
 type Customer struct {
 	ID        uuid.UUID `gorm:"primaryKey"`
 	Name      string    `gorm:"size:255;not null"`
-	Email     string    `gorm:"size:255;not null,unique"`
+	Email     string    `gorm:"size:255;not null;unique"`
 	CreatedAt time.Time `gorm:"not null"`
 	UpdatedAt time.Time `gorm:"not null"`
 	Addresses []CustomerAddress
@@ -29,6 +29,7 @@ type Customer struct {
 func NewCustomerAddress(customerID uuid.UUID, locationName, address string) *CustomerAddress {
 	now := time.Now()
 	return &CustomerAddress{
+		ID:           uuid.New(),
 		CustomerID:   customerID,
 		LocationName: locationName,
 		Address:      address,
@@ -38,7 +39,8 @@ func NewCustomerAddress(customerID uuid.UUID, locationName, address string) *Cus
 }
 
 type CustomerAddress struct {
-	CustomerID   uuid.UUID `gorm:"primaryKey"`
+	ID           uuid.UUID `gorm:"primaryKey"`
+	CustomerID   uuid.UUID `gorm:"not null"`
 	LocationName string    `gorm:"size:255;not null"`
 	Address      string    `gorm:"size:255;not null"`
 	CreatedAt    time.Time `gorm:"not null"`
