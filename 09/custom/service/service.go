@@ -34,7 +34,7 @@ func NewService() *Service {
 	admin := &User{
 		ID:        uuid.New(),
 		Email:     "admin@gmail.com",
-		Password:  "admin",
+		Password:  []byte("$2a$10$w0pj8xE06eGm3ZiQ0NQOXehM1DOj5hOVMJfkOyyLsAO6sLCzyJOxW"),
 		Role:      RoleAdmin,
 		CreatedAt: time.Now().UTC(),
 	}
@@ -98,10 +98,15 @@ func (s *Service) CreateUser(_ context.Context, email, password string) (*User, 
 		return nil, ErrUserAlreadyExists
 	}
 
+	passwordHash, err := HashPassword([]byte(password))
+	if err != nil {
+		return nil, err
+	}
+
 	user := &User{
 		ID:        uuid.New(),
 		Email:     email,
-		Password:  password,
+		Password:  passwordHash,
 		Role:      RoleUser,
 		CreatedAt: time.Now().UTC(),
 	}
@@ -136,7 +141,7 @@ func (s *Service) ReadUserByCredentials(_ context.Context, email, password strin
 	defer s.usersMutex.Unlock()
 
 	for _, v := range s.users {
-		if v.Email == email && v.Password == password {
+		if v.Email == email && CompareHashAndPassword(v.Password, []byte(password)) {
 			return v, nil
 		}
 	}

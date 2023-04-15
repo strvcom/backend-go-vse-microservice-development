@@ -1,8 +1,11 @@
 package service
 
 import (
+	"crypto/rand"
+	"encoding/base64"
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -14,11 +17,20 @@ const (
 	RoleAdmin Role = "admin"
 
 	accessTokenExpiration = time.Hour
+	refreshTokenLen       = 16
 )
 
 var (
-	secret = []byte("+C3Nwz7LWIHMS7GdgdkV5tSOxzz++LocgdUdcjtSNpzMWfZ5JfoHElvWSOCs3MH9nPR4aWfTGvamRsY7icU4zQ==")
+	secret []byte
 )
+
+func init() {
+	s, ok := os.LookupEnv("secret")
+	if !ok {
+		os.Exit(1)
+	}
+	secret = []byte(s)
+}
 
 type Role string
 
@@ -39,7 +51,7 @@ func (u Role) IsSufficientToRole(role Role) bool {
 type User struct {
 	ID        uuid.UUID
 	Email     string
-	Password  string
+	Password  []byte
 	Role      Role
 	CreatedAt time.Time
 }
@@ -74,8 +86,13 @@ func (t AccessToken) IsExpired() bool {
 
 type RefreshToken string
 
-func NewRefreshToken() string {
-	return uuid.New().String()
+func NewRefreshToken() (string, error) {
+	data := make([]byte, refreshTokenLen)
+	_, err := rand.Read(data)
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(data), nil
 }
 
 type TokenParser struct{}
@@ -106,19 +123,14 @@ func NewSession(claims Claims) (*Session, error) {
 	if err != nil {
 		return nil, err
 	}
+	refreshToken, err := NewRefreshToken()
+	if err != nil {
+		return nil, err
+	}
 	return &Session{
 		AccessToken:  *accessToken,
-		RefreshToken: NewRefreshToken(),
+		RefreshToken: refreshToken,
 	}, nil
-}
-
-type customClaims struct {
-	UserRole Role `json:"user_role"`
-}
-
-type claims struct {
-	jwt.RegisteredClaims
-	CustomClaims customClaims `json:"custom_claims"`
 }
 
 func signAccessToken(c Claims, expiresAt time.Time) (string, error) {
@@ -157,4 +169,13 @@ func parseToken(data string) (*claims, error) {
 	}
 
 	return c, nil
+}
+
+type customClaims struct {
+	UserRole Role `json:"user_role"`
+}
+
+type claims struct {
+	jwt.RegisteredClaims
+	CustomClaims customClaims `json:"custom_claims"`
 }

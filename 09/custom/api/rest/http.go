@@ -102,7 +102,7 @@ func (c *Controller) CreateSession(w http.ResponseWriter, r *http.Request) {
 		User:    FromUser(user),
 		Session: FromSession(session),
 	}
-	writeResponse(c.logger, w, http.StatusOK, resp)
+	writeResponse(c.logger, w, http.StatusCreated, resp)
 }
 
 func (c *Controller) RefreshSession(w http.ResponseWriter, r *http.Request) {
