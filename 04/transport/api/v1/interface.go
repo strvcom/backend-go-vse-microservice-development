@@ -1,9 +1,9 @@
-package model
+package v1
 
 import (
 	"context"
 
-	svcmodel "vse-course/service/model"
+	svcmodel "user-management-api/service/model"
 )
 
 type Service interface {

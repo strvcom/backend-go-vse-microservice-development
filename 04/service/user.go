@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 
-	"vse-course/service/errors"
-	"vse-course/service/model"
+	"user-management-api/service/errors"
+	"user-management-api/service/model"
 )
 
 var (

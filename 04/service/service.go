@@ -2,6 +2,6 @@ package service
 
 type Service struct{}
 
-func CreateService() Service {
-	return Service{}
+func NewService() (Service, error) {
+	return Service{}, nil
 }
