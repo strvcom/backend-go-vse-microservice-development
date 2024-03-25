@@ -4,7 +4,7 @@ docker run -d --name data-persistence -p 5432:5432 -e POSTGRES_USER=root -e POST
 ```
 
 ## Migrate
-Replace `project_path` according to your needs.
+Replace `project_path` according your needs.
 
 ### Migrate up
 ```shell
