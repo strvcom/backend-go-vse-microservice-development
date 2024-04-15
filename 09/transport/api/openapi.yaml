@@ -1,0 +1,24 @@
+openapi: 3.0.3
+info:
+  title: User management service
+  description: User management service allowing to manage users.
+  version: 0.0.0
+servers:
+  - url: http://localhost
+    description: Localhost server running on HTTP.
+
+paths:
+  "/ping":
+    get:
+      description: Health check
+      operationId: Ping
+      summary: Check the healthiness of the service
+      responses:
+        "204":
+          description: It's ALIVE (a.k.a. service is up and running)
+        "400":
+          description: Invalid request
+  "/users": {
+    # TODO;
+  }
+components: {}
