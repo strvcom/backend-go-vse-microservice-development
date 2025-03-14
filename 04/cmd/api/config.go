@@ -3,7 +3,7 @@ package main
 import (
 	"sync"
 
-	envx "go.strv.io/env"
+	env "github.com/caarlos0/env/v10"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
@@ -25,7 +25,7 @@ func LoadConfig() (Config, error) {
 	loaddotenv(dotenvPath)
 
 	cfg := Config{}
-	if err := envx.Apply(&cfg); err != nil {
+	if err := env.Parse(&cfg); err != nil {
 		return cfg, err
 	}
 	if err := validate.Struct(&cfg); err != nil {
