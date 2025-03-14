@@ -3,14 +3,14 @@ MIGRATIONS_DIR := ./repository/sql/migrations
 start-local-database: DATABASE_NAME=postgres
 start-local-database:
 	@docker run \
-			-d \
-			--name postgres \
-			-p 5432:5432 \
-			-e POSTGRES_USER=root \
-			-e POSTGRES_PASSWORD=1234 \
-			-e POSTGRES_DB=$(DATABASE_NAME) \
-			postgres:15 \
-			>/dev/null
+		-d \
+		--name postgres \
+		-p 5432:5432 \
+		-e POSTGRES_USER=root \
+		-e POSTGRES_PASSWORD=root \
+		-e POSTGRES_DB=$(DATABASE_NAME) \
+		postgres:15 \
+		>/dev/null
 	$(info Database $(DATABASE_NAME) started on port :5432)
 
 stop-local-database:

@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"log/slog"
 
+	httpx "go.strv.io/net/http"
+
 	"user-management-api/service"
 	"user-management-api/transport/api"
 	"user-management-api/transport/util"
-
-	httpx "go.strv.io/net/http"
 )
 
 var version = "v0.0.0"
