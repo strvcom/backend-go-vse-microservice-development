@@ -3,6 +3,8 @@ package v1
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-playground/validator/v10"
+
+	"user-management-api/transport/api/v1/model"
 )
 
 type Handler struct {
@@ -15,10 +17,13 @@ type Handler struct {
 func NewHandler(
 	service Service,
 ) *Handler {
+	v := validator.New()
+	model.RegisterCustomValidations(v)
+
 	h := &Handler{
 		Mux:       chi.NewRouter(),
 		service:   service,
-		validator: validator.New(),
+		validator: v,
 	}
 	h.initRouter()
 	return h

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-playground/validator/v10"
@@ -45,6 +46,11 @@ func mapTransportUserToServiceUser(user transportmodel.User) model.User {
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
+		BirthDate: model.BirthDate{
+			Day:   user.BirthDate.Day,
+			Month: time.Month(user.BirthDate.Month),
+			Year:  user.BirthDate.Year,
+		},
 	}
 }
 
@@ -53,6 +59,11 @@ func mapServiceUserToTransportUser(user model.User) transportmodel.User {
 		Email:     user.Email,
 		FirstName: user.FirstName,
 		LastName:  user.LastName,
+		BirthDate: transportmodel.BirthDate{
+			Day:   user.BirthDate.Day,
+			Month: int(user.BirthDate.Month),
+			Year:  user.BirthDate.Year,
+		},
 	}
 }
 
